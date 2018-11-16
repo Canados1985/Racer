@@ -1658,7 +1658,7 @@ GameObject:
   - component: {fileID: 33487573915703248}
   - component: {fileID: 65502692504413340}
   - component: {fileID: 23904847859492430}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ColliderBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2315,7 +2315,7 @@ GameObject:
   - component: {fileID: 33016702154108088}
   - component: {fileID: 65993609039449550}
   - component: {fileID: 23246173590674684}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ColliderBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2386,13 +2386,14 @@ GameObject:
   - component: {fileID: 114457136241351422}
   - component: {fileID: 114931993445403314}
   - component: {fileID: 65525396291317106}
-  m_Layer: 0
+  - component: {fileID: 114253546518170414}
+  m_Layer: 10
   m_Name: CamaroPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1647887311737924
 GameObject:
   m_ObjectHideFlags: 1
@@ -2549,7 +2550,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4453646545931902}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2884,7 +2885,7 @@ GameObject:
   - component: {fileID: 33142709175557084}
   - component: {fileID: 65223685057520252}
   - component: {fileID: 23920760954988142}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ColliderFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4745,14 +4746,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1297342191886160}
-  m_LocalRotation: {x: 0.15833041, y: 0, z: 0, w: 0.9873862}
-  m_LocalPosition: {x: 0, y: 0.282, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4420331875575072}
   m_Father: {fileID: 4706371231765488}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 18.22, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4409268518008418
 Transform:
   m_ObjectHideFlags: 1
@@ -4821,7 +4822,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1304353157809834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.2000003, z: -6.2}
+  m_LocalPosition: {x: -0, y: 3.17, z: -7.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4408079118964704}
@@ -5853,7 +5854,7 @@ Transform:
   m_GameObject: {fileID: 1642439023247172}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 11.630001, y: 18.8, z: 145.41}
-  m_LocalScale: {x: 0.90000093, y: 0.9, z: 0.90000093}
+  m_LocalScale: {x: 0.9000019, y: 0.9, z: 0.9000019}
   m_Children:
   - {fileID: 4497624077437332}
   - {fileID: 4408079118964704}
@@ -6640,8 +6641,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
@@ -14300,7 +14301,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1304353157809834}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!82 &82222908055572278
 AudioSource:
   m_ObjectHideFlags: 1
@@ -14977,6 +14978,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SkidTrailPrefab: {fileID: 400000, guid: 4b6aa99de5d21424eab6ae279f31475b, type: 2}
   skidParticles: {fileID: 0}
+--- !u!114 &114253546518170414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1642439023247172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db865986f75ee44eba89ace4646af65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WaitTime: 3
+  m_VelocityThreshold: 1
 --- !u!114 &114254075451694600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15033,11 +15047,11 @@ MonoBehaviour:
   - name: Cam1
     isStatic: 0
     xOffset: 0
-    yOffset: 3.1
-    zOffset: -7.55
+    yOffset: 4.07
+    zOffset: -9.28
     rotationThreshold: 1
     cameraStickiness: 10
-    cameraRotationSpeed: 5
+    cameraRotationSpeed: 10
     canShake: 0
     amplitude: 3.5
     frequency: 0.99999
@@ -15173,7 +15187,7 @@ MonoBehaviour:
   m_MaxHandbrakeTorque: 100000000
   m_Downforce: 100
   m_SpeedType: 1
-  m_Topspeed: 180
+  m_Topspeed: 200
   m_RevRangeBoundary: 1
   m_SlipLimit: 1
   m_BrakeTorque: 3000

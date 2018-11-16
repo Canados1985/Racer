@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -14,6 +15,10 @@ public class GameManager : MonoBehaviour {
     private GameStates e_gameStates;
     public GameObject go_MenuCamera;
 
+       
+    public Vector3 CamaroAI1Vector;
+    public Vector3 CamaroAI2Vector;
+    public Vector3 CamaroAI3Vector;
 
     public GameObject[] winPoints; // List Of WinPoints
     public GameObject go_winPoints; //
@@ -55,10 +60,14 @@ public class GameManager : MonoBehaviour {
     public GameObject go_youLose;
 
     
-    public int AIlaps = 0;
-    public bool b_FirstLapAI = false;
-    public bool b_SecondLapAI = false;
-    public bool b_ThirdLapAI = false;
+    public int AI1laps = 0;
+    public int AI2laps = 0;
+    public int AI3laps = 0;
+    public bool b_AI1Won = false;
+    public bool b_AI2Won = false;
+    public bool b_PlayerWon = false;
+
+    public bool b_AI3Won = false;
     float f_count = 5;
     public int Playerlaps = 0;
     bool b_FirstLapDone = false;
@@ -81,7 +90,10 @@ public class GameManager : MonoBehaviour {
         go_youLose.SetActive(false);
         e_gameStates = GameStates.MENU;
         ChangeGameStates();
-        
+        AI1laps = 0;
+        AI2laps = 0;
+        AI3laps = 0;
+        Playerlaps = 0;
     }
 
 
@@ -90,7 +102,7 @@ public class GameManager : MonoBehaviour {
     {
         e_gameStates = GameStates.GAME;
         ChangeGameStates();
-        FindObjectOfType<AudioManager>().Stop("menuTheme");
+        FindObjectOfType<AudioManager>().Pause("menuTheme");
         b_GameModeIsActive = true;
 
     }
@@ -130,6 +142,31 @@ public class GameManager : MonoBehaviour {
             carsAI[i].SetActive(true);
         }
     }
+
+    // Game Over State
+    internal void GameOver()
+    {
+
+        e_gameStates = GameStates.GAMEOVER;
+        ChangeGameStates();
+        FindObjectOfType<AudioManager>().Stop("raceTheme");
+        FindObjectOfType<AudioManager>().Unpause("menuTheme");
+        b_GameModeIsActive = true;
+        go_Player.SetActive(false);
+    }
+
+    // Game Win State
+    internal void GameWin()
+    {
+
+        e_gameStates = GameStates.GAMEWIN;
+        ChangeGameStates();
+        FindObjectOfType<AudioManager>().Stop("raceTheme");
+        FindObjectOfType<AudioManager>().Unpause("menuTheme");
+        b_GameModeIsActive = true;
+        go_Player.SetActive(false);
+    }
+
     // Game Exit
     public void GameExit()
     {
@@ -265,13 +302,13 @@ public class GameManager : MonoBehaviour {
                 b_SecondLapDone = true;
             }
         }
-        //Checking lap 3
+        //Checking lap3
         if (Playerlaps == 3 && b_ThirdLapDone == false && gameStates[1].activeSelf == true)
         {
             //Here also need to add win or lose condotions
 
             go_youWin.SetActive(true);
-
+            b_PlayerWon = true;
             f_count -= Time.deltaTime;
             Debug.Log(f_count);
             if (f_count <= 0)
@@ -342,5 +379,35 @@ public class GameManager : MonoBehaviour {
             }
 
         }
+
+        //Checking if player wins
+        if (b_PlayerWon == true)
+        {
+            GameWin();
+        }
+
+        //Checking win condition for AI1/AI2/AI3
+        if (AI1laps >= 3 && b_AI2Won == false && b_AI3Won == false && b_PlayerWon == false)
+        {
+            Debug.Log("AI1 WON!!!");
+            GameOver();
+        }
+        if (AI2laps >= 3 && b_AI1Won == false && b_AI3Won == false && b_PlayerWon == false)
+        {
+            Debug.Log("AI2 WON!!!");
+            GameOver();
+        }
+        if (AI3laps >= 3 && b_AI2Won == false && b_AI1Won == false && b_PlayerWon == false)
+        {
+            Debug.Log("AI3 WON!!!");
+            GameOver();
+        }
+
+
+
+
+        Debug.Log(CamaroAI1Vector + CamaroAI2Vector + CamaroAI3Vector);
+
+
     }
 }
