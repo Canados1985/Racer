@@ -9,6 +9,8 @@ public class AIPoints : MonoBehaviour {
     public GameObject go_CamaroAI1;
     public GameObject go_CamaroAI2;
     public GameObject go_CamaroAI3;
+    public GameObject go_StartCamera;
+
 
 
     public float f_countTurnsForAI1 = 0;
@@ -29,7 +31,7 @@ public class AIPoints : MonoBehaviour {
 
     void Start () {
 
-
+        cl_AIPoints = this;
 
         // Turn off Mesh Renderer for AI points
         for (int i = 0; i < AIpoints.Length; i++)
@@ -63,14 +65,17 @@ public class AIPoints : MonoBehaviour {
             {
                 AIpoints[i].SetActive(true);
                 AIpoints[i].GetComponent<AIPoints>().b_pointActiveAI1[i] = false;
-
+                
             }
 
             //Check collision with Last Point Only for AI1
             if (collider.gameObject.name == "CamaroAI01" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name == "LastPointAI")
             {
                 GameManager.cl_GameManager.AI1laps++;
-                Debug.Log(GameManager.cl_GameManager.AI1laps);
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI1();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI1();
+                
+                //Debug.Log(GameManager.cl_GameManager.AI1laps);
                 if (i - 1 == temp1)
                 {
 
@@ -85,7 +90,7 @@ public class AIPoints : MonoBehaviour {
 
                 }
 
-                Debug.Log("CAMARO1 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+                //Debug.Log("CAMARO1 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI1.Length; j++)
                 {
@@ -103,11 +108,14 @@ public class AIPoints : MonoBehaviour {
             if (collider.gameObject.name == "CamaroAI01" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name != "LastPointAI")
                {
 
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI1();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI1();
 
-                    if (i - 1 == temp1)
+
+                if (i - 1 == temp1)
                     {
-
-                        for (int t = 0; t < AIpoints.Length; t++)
+                   
+                    for (int t = 0; t < AIpoints.Length; t++)
                         {
                        
                         AIpoints[temp1].GetComponent<AIPoints>().b_pointActiveAI1[temp1] = false;
@@ -117,11 +125,11 @@ public class AIPoints : MonoBehaviour {
 
                     }
 
-                    Debug.Log(temp1);
+                    //Debug.Log(temp1);
 
                 }
 
-                Debug.Log("CAMARO1 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+               // Debug.Log("CAMARO1 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI1.Length; j++)
                 {
@@ -152,6 +160,7 @@ public class AIPoints : MonoBehaviour {
             {
                 AIpoints[i].SetActive(true);
                 AIpoints[i].GetComponent<AIPoints>().b_pointActiveAI2[i] = false;
+                
 
             }
 
@@ -160,7 +169,9 @@ public class AIPoints : MonoBehaviour {
             if (collider.gameObject.name == "CamaroAI02" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name == "LastPointAI")
             {
                 GameManager.cl_GameManager.AI2laps++;
-                Debug.Log(GameManager.cl_GameManager.AI2laps);
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI2();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI2();
+                //  Debug.Log(GameManager.cl_GameManager.AI2laps);
                 if (i - 1 == temp2)
                 {
 
@@ -175,7 +186,7 @@ public class AIPoints : MonoBehaviour {
 
                 }
 
-                Debug.Log("CAMARO2 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+              //  Debug.Log("CAMARO2 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI2.Length; j++)
                 {
@@ -192,7 +203,8 @@ public class AIPoints : MonoBehaviour {
             //Check Collisions with all others check points for AI2
             if (collider.gameObject.name == "CamaroAI02" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name != "LastPointAI")
             {
-
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI2();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI2();
 
                 if (i - 1 == temp2)
                 {
@@ -207,11 +219,11 @@ public class AIPoints : MonoBehaviour {
 
                     }
 
-                    Debug.Log(temp2);
+                 //   Debug.Log(temp2);
 
                 }
 
-                Debug.Log("CAMARO2 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+               // Debug.Log("CAMARO2 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI2.Length; j++)
                 {
@@ -244,6 +256,7 @@ public class AIPoints : MonoBehaviour {
             {
                 AIpoints[i].SetActive(true);
                 AIpoints[i].GetComponent<AIPoints>().b_pointActiveAI3[i] = false;
+                
 
             }
 
@@ -252,7 +265,9 @@ public class AIPoints : MonoBehaviour {
             if (collider.gameObject.name == "CamaroAI03" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name == "LastPointAI")
             {
                 GameManager.cl_GameManager.AI3laps++;
-                Debug.Log(GameManager.cl_GameManager.AI3laps);
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI3();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI3();
+                //    Debug.Log(GameManager.cl_GameManager.AI3laps);
                 if (i - 1 == temp3)
                 {
 
@@ -267,7 +282,7 @@ public class AIPoints : MonoBehaviour {
 
                 }
 
-                Debug.Log("CAMARO3 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+             //   Debug.Log("CAMARO3 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI3.Length; j++)
                 {
@@ -284,7 +299,8 @@ public class AIPoints : MonoBehaviour {
             //Check Collisions with all others check points for AI3
             if (collider.gameObject.name == "CamaroAI03" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name != "LastPointAI")
             {
-
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressAI3();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotAI3();
 
                 if (i - 1 == temp3)
                 {
@@ -299,11 +315,11 @@ public class AIPoints : MonoBehaviour {
 
                     }
 
-                    Debug.Log(temp3);
+             //       Debug.Log(temp3);
 
                 }
 
-                Debug.Log("CAMARO3 WITH " + AIpoints[i] + " POINT FROM ARRAY");
+             //   Debug.Log("CAMARO3 WITH " + AIpoints[i] + " POINT FROM ARRAY");
 
                 for (int j = 0; j < b_pointActiveAI3.Length; j++)
                 {
@@ -322,25 +338,48 @@ public class AIPoints : MonoBehaviour {
             //// CHECKING COLLISIONS FOR CAMARO2 ENDS HERE ------------------------------------------>
 
 
+
+
+
+
+
+
+            //// CHECKING COLLISIONS FOR STARTCAMERA STARTS HERE ------------------------------------------>
+
+            //Turn on Last Point For STARTCAMERA
+            if (collider.gameObject.name == "StartCamera" && AIpoints[i].gameObject.name == "LastPointAI")
+            {
+                AIpoints[i].SetActive(true);
+                
+            }
+
+            //Check collision with Last Point Only for STARTCAMERA
+            if (collider.gameObject.name == "StartCamera" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name == "LastPointAI")
+            {
+                
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressStartCamera();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotStartCamera();
+            }
+
+            //Check Collisions with all others check points for AI1
+            if (collider.gameObject.name == "StartCamera" && this.gameObject == AIpoints[i] && AIpoints[i].gameObject.name != "LastPointAI")
+            {
+
+                collider.gameObject.GetComponent<UnityStandardAssets.Utility.WaypointProgressTracker>().SetCurrentProgressStartCamera();
+                collider.gameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>().UpdatePosAndRotStartCamera();
+
+
+            }
+            //// CHECKING COLLISIONS FOR STARTCAMERA ENDS HERE ------------------------------------------>
+
+
+
+
         }
 
     }
 
 
-    void Update () {
-
-
-
-
-
-
-        for (int i = 0; i < AIpoints.Length; i++)
-        {
-            AIpoints[i].GetComponent<Transform>();
-        }
-
-
-    }
 
 
 

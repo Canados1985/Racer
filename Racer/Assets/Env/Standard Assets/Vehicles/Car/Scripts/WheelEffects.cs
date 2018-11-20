@@ -20,6 +20,17 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void Start()
         {
+            if(this.gameObject.name == "WheelHubRearRightCamaroPlayer" || this.gameObject.name == "WheelHubRearLeftCamaroPlayer")
+            {
+                skidParticles.Stop();
+            }
+
+            if (this.gameObject.name == "WheelHubRearRightCamaroAI03" || this.gameObject.name == "WheelHubRearLeftCamaroAI03")
+            {
+                skidParticles.Stop();
+            }
+            
+
             skidParticles = transform.root.GetComponentInChildren<ParticleSystem>();
 
             if (skidParticles == null)

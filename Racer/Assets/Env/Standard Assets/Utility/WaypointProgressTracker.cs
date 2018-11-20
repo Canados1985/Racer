@@ -44,10 +44,20 @@ namespace UnityStandardAssets.Utility
 
         public Transform target;
 
-        private float progressDistance; // The progress round the route, used in smooth mode.
+        public float progressDistance; // The progress round the route, used in smooth mode.
         private int progressNum; // the current waypoint number, used in point-to-point mode.
         private Vector3 lastPosition; // Used to calculate current speed (since we may not have a rigidbody component)
         private float speed; // current speed of this object (calculated from delta since last frame)
+
+        public float f_lastProgressDistanceAI1 = 0;
+        public float f_lastProgressDistanceAI2 = 0;
+        public float f_lastProgressDistanceAI3 = 0;
+
+
+        public float f_lastProgressDistanceStartCamera = 0;
+
+
+
 
         // setup script properties
         private void Start()
@@ -66,10 +76,32 @@ namespace UnityStandardAssets.Utility
             Reset();
         }
 
+        //Saving Current progress for AI1
+        public void SetCurrentProgressAI1()
+        {
+            this.f_lastProgressDistanceAI1 = this.progressDistance;
+        }
+        //Saving Current progress for AI2
+        public void SetCurrentProgressAI2()
+        {
+            this.f_lastProgressDistanceAI2 = this.progressDistance;
+        }
+        //Saving Current progress for AI3
+        public void SetCurrentProgressAI3()
+        {
+            this.f_lastProgressDistanceAI3 = this.progressDistance;
+        }
+        //Saving Current progress for StartCamera
+        public void SetCurrentProgressStartCamera()
+        {
+            this.f_lastProgressDistanceStartCamera = this.progressDistance;
+        }
+
 
         // reset the object to sensible values
         public void Reset()
         {
+
             progressDistance = 0;
             progressNum = 0;
             if (progressStyle == ProgressStyle.PointToPoint)
@@ -77,11 +109,14 @@ namespace UnityStandardAssets.Utility
                 target.position = circuit.Waypoints[progressNum].position;
                 target.rotation = circuit.Waypoints[progressNum].rotation;
             }
+     
         }
 
 
         private void Update()
         {
+            
+
             if (progressStyle == ProgressStyle.SmoothAlongRoute)
             {
                 // determine the position we should currently be aiming for

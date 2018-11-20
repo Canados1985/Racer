@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using UnityStandardAssets.Utility;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
@@ -19,6 +19,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
     public class CarController : MonoBehaviour
     {
+               
         [SerializeField] private CarDriveType m_CarDriveType = CarDriveType.FourWheelDrive;
         [SerializeField] private WheelCollider[] m_WheelColliders = new WheelCollider[4];
         [SerializeField] private GameObject[] m_WheelMeshes = new GameObject[4];
@@ -61,7 +62,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public WheelCollider wheelFR;
         public WheelCollider wheelBL;
         public WheelCollider wheelBR;
-        public float maxBreakTorque = 200;
+        public float maxBreakTorque = 2000;
         private bool b_applyHandBreak = false;
         public float handBreakForwardSlip = 0.04f;
         public float handBreakSideWaysSlip = 0.08f;
@@ -70,10 +71,94 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public Texture2D speedOmeter;
         public Texture2D needle;
-            
+
+
+        private Vector3 startPos;
+        private Quaternion startRot;
+        private Vector3 newPos;
+        private Quaternion newRot;
+
+
+        // AI1
+        private Vector3 startPosAI1;
+        private Quaternion startRotAI1;
+        private Vector3 newPosAI1;
+        private Quaternion newRotAI1;
+        // AI2
+        private Vector3 startPosAI2;
+        private Quaternion startRotAI2;
+        private Vector3 newPosAI2;
+        private Quaternion newRotAI2;
+        // AI3
+        private Vector3 startPosAI3;
+        private Quaternion startRotAI3;
+        private Vector3 newPosAI3;
+        private Quaternion newRotAI3;
+
+        // StartCamera
+        private Vector3 startCameraPos;
+        private Quaternion startCameraRot;
+        private Vector3 startCameraNewPos;
+        private Quaternion startCameraNewRot;
+
+
         // Use this for initializations
         private void Start()
         {
+
+            if (this.gameObject.name == "CamaroPlayer")
+            {
+                startPos = this.transform.position;
+                startRot = this.transform.rotation;
+                newPos = startPos;
+                newRot = startRot;
+
+                m_MaximumSteerAngle = 25;
+                m_FullTorqueOverAllWheels = 3200f;
+                m_ReverseTorque = 3000f;
+            }
+
+            if (this.gameObject.name == "CamaroAI01")
+            {
+                startPosAI1 = this.transform.position;
+                startRotAI1 = this.transform.rotation;
+                newPosAI1 = startPosAI1;
+                newRotAI1 = startRotAI1;
+                m_FullTorqueOverAllWheels = 3200f;
+            }
+
+            if (this.gameObject.name == "CamaroAI02")
+            {
+
+                startPosAI2 = this.transform.position;
+                startRotAI2 = this.transform.rotation;
+                newPosAI2 = startPosAI2;
+                newRotAI2 = startRotAI2;
+                m_FullTorqueOverAllWheels = 3200f;
+            }
+
+            if (this.gameObject.name == "CamaroAI03")
+            {
+
+                startPosAI3 = this.transform.position;
+                startRotAI3 = this.transform.rotation;
+                newPosAI3 = startPosAI3;
+                newRotAI3 = startRotAI3;
+                m_FullTorqueOverAllWheels = 3200f;
+            }
+
+            if (this.gameObject.name == "StartCamera")
+            {
+
+                startCameraPos = this.transform.position;
+                startCameraRot = this.transform.rotation;
+                startCameraNewPos = startCameraPos;
+                startCameraNewRot = startCameraRot;
+                
+            }
+
+
+
             m_WheelMeshLocalRotations = new Quaternion[4];
             for (int i = 0; i < 4; i++)
             {
@@ -90,14 +175,104 @@ namespace UnityStandardAssets.Vehicles.Car
 
         void OnGUI()
         {
-            GUI.DrawTexture(new Rect(Screen.width - 300, Screen.height - 240, 300, 300), speedOmeter);
-            float speedFactor = CurrentSpeed / m_Topspeed;
-            float rotationAngle = Mathf.Lerp(-45, 210, Mathf.Abs(speedFactor));
-            GUIUtility.RotateAroundPivot(rotationAngle, new Vector2(Screen.width - 150, Screen.height - 95));
-            GUI.DrawTexture(new Rect(Screen.width - 300, Screen.height - 245, 300,300), needle);
+            if (GameManager.cl_GameManager.b_GameIsPaused == false)
+            {
+                GUI.DrawTexture(new Rect(Screen.width - 300, Screen.height - 240, 300, 300), speedOmeter);
+                float speedFactor = CurrentSpeed / m_Topspeed;
+                float rotationAngle = Mathf.Lerp(-45, 210, Mathf.Abs(speedFactor));
+                GUIUtility.RotateAroundPivot(rotationAngle, new Vector2(Screen.width - 150, Screen.height - 95));
+                GUI.DrawTexture(new Rect(Screen.width - 300, Screen.height - 245, 300, 300), needle);
+            }
+
 
         }
 
+        //Saving New Position and Rotation for Player based on collisions with wayPoints
+        public void UpdatePositionAndRotation()
+        {
+            newPos = this.transform.position;
+            newRot = this.transform.rotation;
+        }
+        //Respawn player car at last position
+        public void RespawnPlayer()
+        {
+            this.transform.position = newPos;
+            this.transform.rotation = newRot;
+
+        }
+
+        //Update Position for CamaroAI1
+        public void UpdatePosAndRotAI1()
+        {
+            newPosAI1 = this.transform.position;
+            newRotAI1 = this.transform.rotation;
+            //Debug.Log("THIS IS REAL PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance);
+            //Debug.Log("THIS IS TEMP PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI1);
+        }
+        //Respawn CamaroAI01
+        public void RespawnAI1()
+        {
+            this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance = this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI1;
+            this.transform.position = newPosAI1;
+            this.transform.rotation = newRotAI1;
+            
+        }
+
+        //Update Position for CamaroAI2
+        public void UpdatePosAndRotAI2()
+        {
+            newPosAI2 = this.transform.position;
+            newRotAI2 = this.transform.rotation;
+            //Debug.Log("THIS IS REAL PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance);
+            //Debug.Log("THIS IS TEMP PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI2);
+        }
+
+        //Respawn CamaroAI02
+        public void RespawnAI2()
+        {
+            this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance = this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI2;
+            this.transform.position = newPosAI2;
+            this.transform.rotation = newRotAI2;
+            
+        }
+
+        //Update Position for CamaroAI3
+        public void UpdatePosAndRotAI3()
+        {
+            newPosAI3 = this.transform.position;
+            newRotAI3 = this.transform.rotation;
+           // Debug.Log("THIS IS REAL PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance);
+           // Debug.Log("THIS IS TEMP PROGRESS DISTANCE " + this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI3);
+        }
+
+        //Respawn CamaroAI03
+        public void RespawnAI3()
+        {
+            this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance = this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceAI3;
+            this.transform.position = newPosAI3;
+            this.transform.rotation = newRotAI3;
+            
+        }
+
+
+        //Update Position for StartCamera
+        public void UpdatePosAndRotStartCamera()
+        {
+            startCameraNewPos = this.transform.position;
+            startCameraNewRot = this.transform.rotation;
+            Debug.Log("THIS IS REAL PROGRESS DISTANCE START CAMERA " + this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance);
+            Debug.Log("THIS IS TEMP PROGRESS DISTANCE START CAMERA" + this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceStartCamera);
+        }
+
+        //Respawn StartCamera
+        public void RespawnStartCamera()
+        {
+            Debug.Log("Function Works!!!");
+            this.gameObject.GetComponent<WaypointProgressTracker>().progressDistance = this.gameObject.GetComponent<WaypointProgressTracker>().f_lastProgressDistanceStartCamera;
+            this.transform.position = startCameraNewPos;
+            this.transform.rotation = startCameraNewRot;
+
+        }
 
         void SetSlipValue(float forward, float sideways)
         {
@@ -121,23 +296,71 @@ namespace UnityStandardAssets.Vehicles.Car
 
         }
 
+        private void Update()
+        {
+
+
+        //Checking magnitude of velocity for AI1 and respawn AI1 if it is less than 2
+        if (this.gameObject.name == "CamaroAI01" && this.m_Rigidbody.velocity.magnitude < 1f)
+        {
+          RespawnAI1();
+        }
+        //Checking magnitude of velocity for AI2 and respawn AI1 if it is less than 2
+        if (this.gameObject.name == "CamaroAI02" && this.m_Rigidbody.velocity.magnitude < 1f)
+        {
+          RespawnAI2();
+        }
+        //Checking magnitude of velocity for AI3 and respawn AI1 if it is less than 2
+        if (this.gameObject.name == "CamaroAI03" && this.m_Rigidbody.velocity.magnitude < 1f)
+        {
+             RespawnAI3();
+        }
+        // Here we can respawn player's car
+        if (Input.GetKeyDown(KeyCode.P) && this.gameObject.name == "CamaroPlayer" && this.m_Rigidbody.velocity.magnitude < 2f)
+        {
+           RespawnPlayer();
+        }
+
+        }
+
 
         private void FixedUpdate()
         {
+            //Changing SteerAngle for player's car based on velocity
+            if (this.gameObject.name == "CamaroPlayer" && m_Rigidbody.velocity.magnitude > 20f)
+            {
+                m_MaximumSteerAngle = 17f;
+                //Debug.Log(m_MaximumSteerAngle);
+                //Debug.Log(m_Rigidbody.velocity.magnitude); 
+            }
+            //Changing SteerAngle for player's car based on velocity, here car can turns faster
+            if (this.gameObject.name == "CamaroPlayer" && m_Rigidbody.velocity.magnitude < 10f)
+            {
+                //Debug.Log(m_MaximumSteerAngle);
+                m_MaximumSteerAngle = 25f;
+            }
 
-            //Break Lights
-            if ((Input.GetKey(KeyCode.S)) || (Input.GetKey(KeyCode.DownArrow)) || (Input.GetButton("Jump")))
+            
+                //Break Lights
+                if (Input.GetKey(KeyCode.S) && this.gameObject.name == "CamaroPlayer" || Input.GetKey(KeyCode.DownArrow) && this.gameObject.name == "CamaroPlayer" || Input.GetButton("Jump") && this.gameObject.name == "CamaroPlayer")
             {
                 breakLights.SetActive(true);
-            }
-            else
-            {
-                breakLights.SetActive(false);
-            }
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        m_WheelEffects[i].EmitTyreSmoke();
+                    }
+
+                    }
+                    else
+                    {
+                        breakLights.SetActive(false);
+                    }
 
             //Apply hand break if we press space key
-            if (Input.GetButton("Jump"))
+            if (Input.GetButton("Jump") && this.gameObject.name == "CamaroPlayer")
             {
+                
                 b_applyHandBreak = true;
                 wheelFL.brakeTorque = maxBreakTorque;
                 wheelFR.brakeTorque = maxBreakTorque;
@@ -147,7 +370,6 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
                 else
                 {
-
                     SetSlipValue(1f, 1f);
                 }
 
@@ -261,7 +483,7 @@ namespace UnityStandardAssets.Vehicles.Car
             TractionControl();
         }
 
-
+        //Calculating car speed depending on speed type
         private void CapSpeed()
         {
             float speed = m_Rigidbody.velocity.magnitude;

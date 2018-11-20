@@ -179,6 +179,7 @@
     <Compile Include="Assets\Scripts\StartMenuCamera.cs" />
     <Compile Include="Assets\Scripts\WayPointSystem\WaypointGizmos.cs" />
     <Compile Include="Assets\Scripts\WinPoints.cs" />
+    <Compile Include="Assets\UI\GameModeCanvas.cs" />
     <Compile Include="Assets\UI\Timer.cs" />
     <None Include="Assets\Env\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Env\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />

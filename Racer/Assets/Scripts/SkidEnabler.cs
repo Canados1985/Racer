@@ -6,7 +6,7 @@ public class SkidEnabler : MonoBehaviour {
 
     public WheelCollider wheelCollider;
     public GameObject skidTrailRenderer;
-    public float f_skidLife = 2.5f;
+    public float f_skidLife = 100f;
     private TrailRenderer skidMark;
     public ParticleSystem skidParticles;
 
@@ -23,7 +23,7 @@ public class SkidEnabler : MonoBehaviour {
         {
             FindObjectOfType<AudioManager>().Play("skid");
        
-            skidParticles.transform.position = wheelCollider.center + ((wheelCollider.radius - 1.05f) * wheelCollider.transform.up);
+            skidParticles.transform.position = wheelCollider.center + ((wheelCollider.radius - 1.05f) * wheelCollider.transform.up / 2);
             skidParticles.Play();
             if (skidMark.time == 0)
             {

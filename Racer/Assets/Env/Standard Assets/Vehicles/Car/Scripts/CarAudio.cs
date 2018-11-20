@@ -90,7 +90,7 @@ namespace UnityStandardAssets.Vehicles.Car
             float camDist = (Camera.main.transform.position - transform.position).sqrMagnitude;
 
             // stop sound if the object is beyond the maximum roll off distance
-            if (m_StartedSound && camDist > maxRolloffDistance*maxRolloffDistance)
+            if (m_StartedSound && camDist > maxRolloffDistance*maxRolloffDistance || GameManager.cl_GameManager.b_GameIsPaused == true)
             {
                 StopSound();
             }
@@ -101,7 +101,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 StartSound();
             }
 
-            if (m_StartedSound)
+            if (m_StartedSound && GameManager.cl_GameManager.b_GameIsPaused == false)
             {
                 // The pitch is interpolated between the min and max values, according to the car's revs.
                 float pitch = ULerp(lowPitchMin, lowPitchMax, m_CarController.Revs);

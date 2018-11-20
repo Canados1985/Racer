@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
-    [RequireComponent(typeof (CarController))]
+    [RequireComponent(typeof(CarController))]
     public class CarAIControl : MonoBehaviour
     {
         public enum BrakeCondition
@@ -45,6 +45,7 @@ namespace UnityStandardAssets.Vehicles.Car
         private float m_AvoidPathOffset;          // direction (-1 or 1) in which to offset path to avoid other car, whilst avoiding
         private Rigidbody m_Rigidbody;
 
+        public Vector3 carAIvector3;
 
         private void Awake()
         {
@@ -52,17 +53,20 @@ namespace UnityStandardAssets.Vehicles.Car
             m_CarController = GetComponent<CarController>();
 
             // give the random perlin a random value
-            m_RandomPerlin = Random.value*100;
+            m_RandomPerlin = Random.value * 100;
 
             m_Rigidbody = GetComponent<Rigidbody>();
+
+
         }
 
 
         private void FixedUpdate()
         {
-            
-            if (!GameManager.cl_GameManager.b_Start && this.gameObject.name != "StartCamera")
+            //Let Camera move in Menu/Win/Lose modes
+            if (!GameManager.cl_GameManager.b_Start && this.gameObject.name != "StartCamera" && this.gameObject.name != "CamaroAI01Start" && this.gameObject.name != "CamaroAI02Start" && this.gameObject.name != "CamaroAI03Start")
             { return; }
+
             if (m_Target == null || !m_Driving)
             {
                 // Car should not be moving,
@@ -220,5 +224,6 @@ namespace UnityStandardAssets.Vehicles.Car
             m_Target = target;
             m_Driving = true;
         }
+
     }
 }
